@@ -25,5 +25,35 @@ namespace YusufTural.ManagementSystem.Business.Concrete
 
             await base.TAddAsync(entity);
         }
+
+        public override void TDelete(AppUser entity)
+        {
+            var userCount = _repository.GetAllAsync().GetAwaiter().GetResult().Count;
+
+            if (userCount <= 1)
+            {
+                throw new Exception("Sistemde en az bir kullanıcı bulunmalıdır. Son kullanıcıyı silemezsiniz!");
+            }
+
+            base.TDelete(entity);
+        }
+
+        public override void TUpdate(AppUser entity)
+        {
+            // 1. Veritabanındaki tüm kullanıcıları çekiyoruz
+            var allUsers = _repository.GetAllAsync().GetAwaiter().GetResult();
+
+            // 2. Kural: "Kendi ID'si hariç", aynı kullanıcı adına sahip başka biri var mı?
+            var isUsernameExists = allUsers.Any(x =>
+                x.Username.ToLower() == entity.Username.ToLower() &&
+                x.Id != entity.Id);
+
+            if (isUsernameExists)
+            {
+                throw new Exception("Bu kullanıcı adı başka bir kullanıcı tarafından kullanılıyor!");
+            }
+
+            base.TUpdate(entity);
+        }
     }
 }
