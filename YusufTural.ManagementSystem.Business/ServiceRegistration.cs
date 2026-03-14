@@ -17,6 +17,7 @@ namespace YusufTural.ManagementSystem.Business
             services.AddScoped<IAppUserService, AppUserManager>();
             services.AddScoped<IContactService, ContactManager>();
             services.AddScoped<IFaqService, FaqManager>();
+            services.AddScoped<IServiceService, ServiceManager>();
 
         }
     }
