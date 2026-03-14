@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="YusufTural.ManagementSystem.Business/YusufTural.ManagementSystem.Business.csproj" />
+  <Project Path="YusufTural.ManagementSystem.DataAccess/YusufTural.ManagementSystem.DataAccess.csproj" />
+  <Project Path="YusufTural.ManagementSystem.Entities/YusufTural.ManagementSystem.Entities.csproj" />
+  <Project Path="YusufTural.ManagementSystem.WebUI/YusufTural.ManagementSystem.WebUI.csproj" />
+</Solution>
