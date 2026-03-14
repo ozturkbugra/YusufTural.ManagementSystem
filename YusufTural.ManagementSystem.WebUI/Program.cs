@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using YusufTural.ManagementSystem.DataAccess;
 using YusufTural.ManagementSystem.Business;
+using YusufTural.ManagementSystem.DataAccess;
+using YusufTural.ManagementSystem.DataAccess.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +16,27 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddBusinessServices();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Admin/Login/Index";
+        options.LogoutPath = "/Admin/Login/Logout";
+        options.AccessDeniedPath = "/Admin/Login/Index";
+        options.Cookie.Name = "YusufTuralManagementCookie";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    });
+
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    await DatabaseSeeder.SeedAsync(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,6 +51,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

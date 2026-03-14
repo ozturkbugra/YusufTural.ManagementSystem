@@ -1,0 +1,73 @@
+﻿@model YusufTural.ManagementSystem.Entities.Concrete.AppUser
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Giriş</title>
+
+    <link href="~/admin/assets/img/favicon.png" rel="icon">
+
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+        <link href="~/admin/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+            <link href="~/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+                <link href="~/admin/assets/css/main.css" rel="stylesheet">
+                </head>
+                <body>
+                    <div class="fauth">
+                        <main class="fauth-main">
+                            <div class="fauth-main-inner">
+                                <div class="fauth-logo fauth-logo-center">
+                                        <span>Admin Panel</span>
+                                    </div>
+
+                                    <div class="fauth-card">
+                                        <div class="fauth-card-head text-center">
+                                            <span class="fauth-kicker"><i class="bi bi-shield-lock"></i> Güvenli Erişim</span>
+                                            <h1 class="fauth-title">Tekrar Hoş Geldin</h1>
+                                            <p class="fauth-subtitle">Devam etmek için lütfen giriş yapın.</p>
+                                        </div>
+
+                                        @if (ViewBag.Error != null)
+                                        {
+                                            <div class="alert alert-danger shadow-sm">
+                                                <i class="bi bi-exclamation-triangle me-2"></i> @ViewBag.Error
+                                            </div>
+                                        }
+
+                                        <form class="fauth-form" method="post" asp-action="Index">
+                                            <div class="fauth-field">
+                                                <label for="username" class="form-label">Kullanıcı Adı</label>
+                                                <input type="text" class="form-control" id="username" name="username" placeholder="Kullanıcı adınızı girin" required>
+                                            </div>
+
+                                            <div class="fauth-field">
+                                                <label for="password" class="form-label">Şifre</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-check mb-4">
+                                                <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" value="true">
+                                                <label class="form-check-label" for="rememberMe">Beni Hatırla</label>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary w-100 py-2">Giriş Yap</button>
+                                        </form>
+                                    </div>
+
+                                    <footer class="footer-centered">
+                                        <div class="footer-copyright">&copy; @DateTime.Now.Year <a href="#">Yusuf Tural</a>. Tüm Hakları Saklıdır.</div>
+                                    </footer>
+                                </div>
+                            </main>
+                        </div>
+
+                        <script src="~/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    </body>
+</html>
