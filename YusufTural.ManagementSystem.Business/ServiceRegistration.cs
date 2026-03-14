@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YusufTural.ManagementSystem.Business.Abstract;
 using YusufTural.ManagementSystem.Business.Concrete;
 
@@ -18,7 +13,8 @@ namespace YusufTural.ManagementSystem.Business
 
             // Özel Servis Kayıtları
             services.AddScoped<ISiteInformationService, SiteInformationManager>();
-
+            services.AddScoped<IAboutUsService, AboutUsManager>();
+            services.AddScoped<IAppUserService, AppUserManager>();
         }
     }
 }
