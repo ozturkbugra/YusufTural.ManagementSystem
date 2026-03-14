@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using YusufTural.ManagementSystem.Business.Abstract;
+using YusufTural.ManagementSystem.Business.Concrete;
 using YusufTural.ManagementSystem.DataAccess;
+using YusufTural.ManagementSystem.DataAccess.Abstract;
+using YusufTural.ManagementSystem.DataAccess.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+//Interface ve Classların kaydı
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericManager<>));
 
 
 builder.Services.AddControllersWithViews();
