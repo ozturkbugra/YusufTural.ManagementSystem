@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using YusufTural.ManagementSystem.DataAccess.Tools;
 using YusufTural.ManagementSystem.Entities.Concrete;
 
 namespace YusufTural.ManagementSystem.DataAccess
@@ -32,6 +33,13 @@ namespace YusufTural.ManagementSystem.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {           
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<AppUser>().HasData(new AppUser
+            {
+                Id = 1,
+                Username = "admin",
+                Password = Sha256Helper.ComputeSha256Hash("123456"),
+            });
         }
     }
 }
