@@ -21,6 +21,7 @@ namespace YusufTural.ManagementSystem.Business
             services.AddScoped<ISiteScriptService, SiteScriptManager>();
             services.AddScoped<IStatisticService, StatisticManager>();
             services.AddScoped<ITestimonialService, TestimonialManager>();
+            services.AddScoped<IVisitorService, VisitorManager>();
         }
     }
 }
