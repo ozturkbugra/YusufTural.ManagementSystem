@@ -1,0 +1,114 @@
+﻿@model Service
+@{
+    ViewData["Title"] = "Hizmet Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Hizmet Düzenle</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Hizmetler</a></li>
+            <li class="breadcrumb-item active">Düzenle</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" id="serviceEditForm">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageUrl" />
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body pt-3">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Hizmet Başlığı</label>
+                                <input type="text" asp-for="Title" class="form-control" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Kısa Açıklama (Düz Yazı)</label>
+                                    <textarea asp-for="ShortDescription" class="form-control" rows="3"></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Hizmet Detayları (Rich Text)</label>
+                                    <div id="quillEditor" style="height: 300px;">
+                                        @Html.Raw(Model.LongDescription)
+                                    </div>
+                                    <input type="hidden" asp-for="LongDescription" id="longDescriptionInput" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-transparent border-bottom">
+                            <h5 class="card-title mb-0">Hizmet Görseli</h5>
+                        </div>
+                        <div class="card-body pt-3 text-center">
+                            <div class="mb-3">
+                                <label class="form-label small text-muted d-block text-start">Mevcut / Yeni Görsel</label>
+                                <img id="serviceImgPreview" src="@Model.ImageUrl" class="img-fluid rounded border mb-3" style="max-height: 200px; object-fit: cover;">
+                                <input type="file" name="serviceImage" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'serviceImgPreview')">
+                                <div class="form-text text-start">Değiştirmek istemiyorsan boş bırak aga.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body pt-3">
+                            <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-white">
+                                <i class="bi bi-check-circle me-1"></i> Değişiklikleri Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-light w-100 mt-2">İptal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    @section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Quill Editor Başlatma
+                var quill = new Quill('#quillEditor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
+
+                // Form gönderilmeden önce editör içeriğini gizli inputa aktar
+                var form = document.getElementById('serviceEditForm');
+                form.onsubmit = function() {
+                    var longDescription = document.querySelector('#longDescriptionInput');
+                    longDescription.value = quill.root.innerHTML;
+                };
+            });
+
+            // Görsel Önizleme
+            function previewImage(input, previewId) {
+                const preview = document.getElementById(previewId);
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+    }
