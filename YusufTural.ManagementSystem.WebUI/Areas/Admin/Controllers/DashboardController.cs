@@ -5,7 +5,7 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]
-    public class DashboardController : Controller
+    public class DashboardController : AdminBaseController
     {
         public IActionResult Index()
         {

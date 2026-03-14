@@ -7,5 +7,7 @@
         Task TAddAsync(T entity);
         void TUpdate(T entity);
         void TDelete(T entity);
+        Task TSaveAsync();
+        void TSave();
     }
 }

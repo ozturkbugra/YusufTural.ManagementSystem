@@ -21,5 +21,8 @@ namespace YusufTural.ManagementSystem.Business.Concrete
         public virtual async Task<T> TGetByIdAsync(int id) => await _repository.GetByIdAsync(id);
 
         public virtual async Task<List<T>> TGetListAsync() => await _repository.GetAllAsync();
+        public virtual async Task TSaveAsync() => await _repository.SaveAsync();
+        public virtual void TSave() => _repository.Save();
+   
     }
 }
