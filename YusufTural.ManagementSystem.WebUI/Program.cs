@@ -1,6 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using YusufTural.ManagementSystem.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Bağlantı cümlesini alıyoruz.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

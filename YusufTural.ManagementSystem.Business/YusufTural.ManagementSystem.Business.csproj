@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\YusufTural.ManagementSystem.DataAccess\YusufTural.ManagementSystem.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
