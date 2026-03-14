@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Yusuf Tural ERP</title>
+
+    <link href="~/admin/assets/img/favicon.png" rel="icon">
+        <link href="~/admin/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+            <link href="~/admin/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+                <link href="~/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+                    <link href="~/admin/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+                        <link href="~/admin/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+                            <link href="~/admin/assets/vendor/phosphor-icons/phosphor-icons.css" rel="stylesheet">
+                                <link href="~/admin/assets/vendor/lucide-icons/lucide.css" rel="stylesheet">
+                                    <link href="~/admin/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+                                        <link href="~/admin/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+                                            <link href="~/admin/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+                                                <link href="~/admin/assets/vendor/choices.js/choices.min.css" rel="stylesheet">
+                                                    <link href="~/admin/assets/vendor/flatpickr/flatpickr.min.css" rel="stylesheet">
+
+                                                        <link href="~/admin/assets/css/main.css" rel="stylesheet">
+  
+                                                            @RenderSection("Styles", false)
+                                                        </head>
+
+                                                        <body>
+
+                                                            @await Component.InvokeAsync("AdminHeader")
+
+                                                            @await Component.InvokeAsync("AdminSidebar")
+
+                                                            <main class="main" id="main">
+                                                                <div class="main-content">
+                                                                    @RenderBody()
+                                                                </div>
+                                                               
+      
+                                                                <partial name="~/Areas/Admin/Views/Shared/Partials/_AdminFooterPartial.cshtml" />
+                                                            </main>
+
+                                                            <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+                                                                <i class="bi bi-arrow-up-short"></i>
+                                                            </a>
+
+                                                            <script src="~/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                                                            <script src="~/admin/assets/vendor/apexcharts/apexcharts.min.js"></script>
+                                                            <script src="~/admin/assets/vendor/chart.js/chart.umd.js"></script>
+                                                            <script src="~/admin/assets/vendor/echarts/echarts.min.js"></script>
+                                                            <script src="~/admin/assets/vendor/simple-datatables/simple-datatables.js"></script>
+                                                            <script src="~/admin/assets/vendor/quill/quill.js"></script>
+                                                            <script src="~/admin/assets/vendor/tinymce/tinymce.min.js"></script>
+                                                            <script src="~/admin/assets/vendor/choices.js/choices.min.js"></script>
+                                                            <script src="~/admin/assets/vendor/flatpickr/flatpickr.min.js"></script>
+
+                                                            <script src="~/admin/assets/js/theme.js"></script>
+                                                            <script src="~/admin/assets/js/main.js"></script>
+                                                            <script src="~/admin/assets/js/apps-sidebar-toggle.js"></script>
+
+                                                            <script>
+                                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                                        const searchInputs = document.querySelectorAll('.sidebar-search-input');
+                                                                        const navItems = document.querySelectorAll('.sidebar .nav-item');
+
+                                                                        searchInputs.forEach(input => {
+                                                                            input.addEventListener('input', function (e) {
+                                                                                const filter = e.target.value.toLowerCase();
+            
+                                                                                // Diğer inputu da senkronize et (Mobilde yazınca masaüstü de dolsun)
+                                                                                searchInputs.forEach(si => { if(si !== input) si.value = e.target.value; });
+
+                                                                                navItems.forEach(item => {
+                                                                                    const text = item.innerText.toLowerCase();
+                                                                                    const isMatch = text.includes(filter);
+
+                                                                                    if (isMatch) {
+                                                                                        item.style.display = ""; // Öğeyi göster
+                    
+                                                                                        // Eğer bu bir alt menü elemanıysa, üst başlığı aç
+                                                                                        if (filter.length > 0) {
+                                                                                            // Üstteki collapse menüsünü bul
+                                                                                            const parentSubmenu = item.closest('.nav-submenu');
+                                                                                            if (parentSubmenu) {
+                                                                                                parentSubmenu.classList.add('show'); // Menüyü aç
+                                                                                                parentSubmenu.style.display = "block";
+                            
+                                                                                                // Başlık linkindeki 'collapsed' sınıfını kaldır ve oku çevir
+                                                                                                const parentLink = parentSubmenu.parentElement.querySelector('.nav-link');
+                                                                                                if (parentLink) {
+                                                                                                    parentLink.classList.remove('collapsed');
+                                                                                                    parentLink.setAttribute('aria-expanded', 'true');
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    } else {
+                                                                                        // Eşleşmiyorsa gizle (Ama başlıkları hemen gizleme ki altındakiler görünebilsin)
+                                                                                        if (!item.classList.contains('has-submenu')) {
+                                                                                            item.style.display = "none";
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                                // Arama temizlenince her şeyi eski orijinal haline getir
+                                                                                if (filter === "") {
+                                                                                    navItems.forEach(item => {
+                                                                                        item.style.display = "";
+                                                                                        const submenus = document.querySelectorAll('.nav-submenu');
+                                                                                        submenus.forEach(sub => {
+                                                                                            sub.classList.remove('show');
+                                                                                            sub.style.display = "";
+                                                                                        });
+                                                                                        const navLinks = document.querySelectorAll('.nav-link');
+                                                                                        navLinks.forEach(link => {
+                                                                                            if (link.nextElementSibling && link.nextElementSibling.classList.contains('nav-submenu')) {
+                                                                                                link.classList.add('collapsed');
+                                                                                                link.setAttribute('aria-expanded', 'false');
+                                                                                            }
+                                                                                        });
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        });
+                                                                    });
+                                                            </script>
+
+                                                            @RenderSection("Scripts", false)
+                                                        </body>
+                                                    </html>

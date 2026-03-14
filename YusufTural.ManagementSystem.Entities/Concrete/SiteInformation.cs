@@ -13,5 +13,8 @@ namespace YusufTural.ManagementSystem.Entities.Concrete
         public string SeoTitle { get; set; } // SEO için
         public string Favicon { get; set; }
         public string BigFavicon { get; set; }
+
+        public string? VideoUrl { get; set; }
+
     }
 }

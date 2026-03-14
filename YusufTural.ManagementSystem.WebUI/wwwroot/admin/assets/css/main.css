@@ -35076,3 +35076,14 @@ textarea.form-control {
     display: block;
   }
 }
+
+.mobile-search.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Arama yaparken Sidebar'daki başlıkların (nav-heading) kaybolmamasını sağlar */
+.nav-heading {
+    transition: all 0.2s ease;
+}
