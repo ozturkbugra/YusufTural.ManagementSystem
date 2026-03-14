@@ -22,5 +22,10 @@ namespace YusufTural.ManagementSystem.Business.Concrete
             }
             await base.TAddAsync(entity);
         }
+
+        public override void TDelete(SiteInformation entity)
+        {
+            throw new Exception("Site Bilgileri içeriği silinemez. Lütfen içeriği güncelleyin.");
+        }
     }
 }

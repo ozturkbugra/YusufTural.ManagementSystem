@@ -24,5 +24,10 @@ namespace YusufTural.ManagementSystem.Business.Concrete
 
             await base.TAddAsync(entity);
         }
+
+        public override void TDelete(AboutUs entity)
+        {
+            throw new Exception("Hakkımızda içeriği silinemez. Lütfen içeriği güncelleyin.");
+        }
     }
 }
