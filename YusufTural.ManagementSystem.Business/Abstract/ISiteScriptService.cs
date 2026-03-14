@@ -2,7 +2,7 @@
 
 namespace YusufTural.ManagementSystem.Business.Abstract
 {
-    public interface IServiceService : IGenericService<Service>
+    public interface ISiteScriptService : IGenericService<SiteScript>
     {
     }
 }

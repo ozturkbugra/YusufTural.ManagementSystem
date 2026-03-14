@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using YusufTural.ManagementSystem.Business.Abstract;
 using YusufTural.ManagementSystem.DataAccess.Abstract;
 using YusufTural.ManagementSystem.Entities.Concrete;
