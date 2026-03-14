@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using YusufTural.ManagementSystem.Business.Abstract;
-using YusufTural.ManagementSystem.Business.Concrete;
 using YusufTural.ManagementSystem.DataAccess;
-using YusufTural.ManagementSystem.DataAccess.Abstract;
-using YusufTural.ManagementSystem.DataAccess.Concrete;
+using YusufTural.ManagementSystem.Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 //Interface ve Classların kaydı
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericManager<>));
+builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddBusinessServices();
 
 
 builder.Services.AddControllersWithViews();

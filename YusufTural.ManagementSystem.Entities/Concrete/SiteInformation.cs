@@ -4,7 +4,7 @@ namespace YusufTural.ManagementSystem.Entities.Concrete
 {
     public sealed class SiteInformation : BaseEntity
     {
-        public string Logo { get; set; }
+        public string? Logo { get; set; }
         public string Name { get; set; }
         public string Slogan { get; set; }
         public string SloganDescription { get; set; } // Sitenin kısa açıklaması
