@@ -1,0 +1,120 @@
+﻿@model List<Visitor>
+@{
+    ViewData["Title"] = "Ziyaretçi Analitiği";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Ziyaretçi İstatistikleri</h1>
+</div>
+
+<section class="section">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body pt-3">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Başlangıç Tarihi</label>
+                    <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Bitiş Tarihi</label>
+                    <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-arrow-repeat me-1"></i> Verileri Güncelle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ziyaret Trendi</h5>
+                </div>
+                <div class="card-body">
+                    <div id="visitorChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card shadow-sm overflow-auto">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ziyaret Kayıtları</h5>
+                </div>
+                <div class="card-body pt-3">
+                    <table class="table table-hover datatable" id="visitorTable">
+                        <thead>
+                            <tr>
+                                <th>Ziyaret Zamanı</th>
+                                <th>IP Adresi</th>
+                                <th>Cihaz / Tarayıcı Bilgisi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.VisitedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td><span class="badge border text-secondary border-secondary">@item.IpAddress</span></td>
+                                    <td class="small text-muted">@item.DeviceInfo</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/admin/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var options = {
+                series: [{
+                    name: 'Ziyaretçi Sayısı',
+                    data: @Html.Raw(Json.Serialize(ViewBag.ChartValues))
+                }],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    toolbar: { show: false },
+                    zoom: { enabled: false }
+                },
+                colors: ['#3b82f6'],
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 3 },
+                fill: {
+                    type: 'gradient',
+                    gradient: { opacityFrom: 0.5, opacityTo: 0.1 }
+                },
+                xaxis: {
+                    categories: @Html.Raw(Json.Serialize(ViewBag.ChartLabels)),
+                    labels: { style: { colors: '#6c757d' } }
+                },
+                yaxis: {
+                    labels: { style: { colors: '#6c757d' } }
+                },
+                grid: {
+                    borderColor: 'rgba(128, 128, 128, 0.1)',
+                    strokeDashArray: 4
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#visitorChart"), options);
+            chart.render();
+
+            if (document.getElementById('visitorTable')) {
+                new simpleDatatables.DataTable('#visitorTable', {
+                    labels: { placeholder: "Kayda odaklan...", perPage: "kayıt", noRows: "Belirtilen tarihlerde ziyaret bulunamadı.", info: "{rows} kayıttan {start}-{end} arası" }
+                });
+            }
+        });
+    </script>
+}
