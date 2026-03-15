@@ -1,6 +1,6 @@
 ﻿@model Service
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Hizmet Oluştur";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -21,92 +21,114 @@
                 <div class="card shadow-sm h-100">
                     <div class="card-body pt-3">
                         <div class="row g-3">
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Hizmet Başlığı</label>
                                 <input type="text" asp-for="Title" class="form-control" placeholder="Örn: Özel Yazılım Geliştirme" required>
                                 </div>
-
-                                <div class="col-12">
-                                    <label class="form-label fw-bold">Kısa Açıklama (Liste ve Kartlarda Görünür)</label>
-                                    <textarea asp-for="ShortDescription" class="form-control" rows="3" placeholder="Hizmetin kısa özeti..."></textarea>
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label fw-bold">Hizmet Detayları (Uzun Açıklama)</label>
-                                    <div id="quillEditor" style="height: 300px;">
-                                        <p>Hizmetin tüm detaylarını buraya yazabilirsin aga...</p>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Hizmet URL (Slug)</label>
+                                    <input type="text" asp-for="Url" class="form-control" placeholder="ozel-yazilim-gelistirme">
+                                        <div class="form-text small">Boş bırakırsan başlıktan otomatik üretilir aga.</div>
                                     </div>
-                                    <input type="hidden" asp-for="LongDescription" id="longDescriptionInput" />
+
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold">Kısa Açıklama (Özet)</label>
+                                        <textarea asp-for="ShortDescription" class="form-control" rows="2" placeholder="Hizmetin kısa özeti..."></textarea>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold">Hizmet Detayları (Uzun Açıklama)</label>
+                                        <div id="quillEditor" style="height: 250px;">
+                                            <p>Hizmetin tüm detaylarını buraya yazabilirsin aga...</p>
+                                        </div>
+                                        <input type="hidden" asp-for="LongDescription" id="longDescriptionInput" />
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <h6 class="text-primary fw-bold"><i class="bi bi-search me-1"></i> Arama Motoru Optimizasyonu (SEO)</h6>
+                                        <hr class="mt-1">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">SEO Başlığı (Title)</label>
+                                        <input type="text" asp-for="SeoTitle" class="form-control" placeholder="Google başlığı">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">SEO Anahtar Kelimeler</label>
+                                            <input type="text" asp-for="SeoKeywords" class="form-control" placeholder="yazılım, c#, ankara">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">SEO Açıklaması (Description)</label>
+                                                <textarea asp-for="SeoDescription" class="form-control" rows="2" placeholder="Google arama sonucu açıklaması..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-transparent"><h5 class="card-title mb-0">Hizmet Görseli</h5></div>
+                                    <div class="card-body pt-3">
+                                        <div class="mb-3">
+                                            <label class="form-label small text-muted">Kapak Fotoğrafı Seç</label>
+                                            <input type="file" name="serviceImage" class="form-control" accept="image/*" onchange="previewImage(this, 'serviceImgPreview')" required>
+                                            <div class="mt-3 text-center">
+                                                <img id="serviceImgPreview" src="#" class="img-fluid rounded d-none border" style="max-height: 200px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card shadow-sm">
+                                    <div class="card-body pt-3">
+                                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                                            <i class="bi bi-save me-1"></i> Hizmeti Yayınla
+                                        </button>
+                                        <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Listeye Dön</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </form>
+                </section>
 
-                <div class="col-lg-4">
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-transparent"><h5 class="card-title mb-0">Hizmet Görseli</h5></div>
-                        <div class="card-body pt-3">
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Kapak Fotoğrafı Seç</label>
-                                <input type="file" name="serviceImage" class="form-control" accept="image/*" onchange="previewImage(this, 'serviceImgPreview')" required>
-                                <div class="mt-3 text-center">
-                                    <img id="serviceImgPreview" src="#" class="img-fluid rounded d-none border" style="max-height: 200px;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @section Scripts {
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Quill Editor Yapılandırması
+                            var quill = new Quill('#quillEditor', {
+                                theme: 'snow',
+                                modules: {
+                                    toolbar: [
+                                        [{ 'header': [1, 2, 3, false] }],
+                                        ['bold', 'italic', 'underline'],
+                                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                        ['link', 'image'],
+                                        ['clean']
+                                    ]
+                                }
+                            });
 
-                    <div class="card shadow-sm">
-                        <div class="card-body pt-3">
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
-                                <i class="bi bi-save me-1"></i> Hizmeti Yayınla
-                            </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Listeye Dön</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </section>
+                            // Form gönderilirken Quill HTML içeriğini gizli inputa aktarır
+                            var form = document.getElementById('serviceForm');
+                            form.onsubmit = function() {
+                                var longDescription = document.querySelector('#longDescriptionInput');
+                                longDescription.value = quill.root.innerHTML;
+                            };
+                        });
 
-    @section Scripts {
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Quill'i başlatıyoruz (Attığın dosyadaki snow temasıyla)
-                var quill = new Quill('#quillEditor', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            ['link', 'image'],
-                            ['clean']
-                        ]
-                    }
-                });
-
-                // Form gönderilmeden önce Quill içeriğini gizli inputa basıyoruz
-                var form = document.getElementById('serviceForm');
-                form.onsubmit = function() {
-                    var longDescription = document.querySelector('#longDescriptionInput');
-                    longDescription.value = quill.root.innerHTML;
-                };
-            });
-
-            // Görsel Önizleme Fonksiyonu
-            function previewImage(input, previewId) {
-                const preview = document.getElementById(previewId);
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        preview.classList.remove('d-none');
-                    }
-                    reader.readAsDataURL(input.files[0]);
+                        // Görsel Önizleme
+                        function previewImage(input, previewId) {
+                            const preview = document.getElementById(previewId);
+                            if (input.files && input.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    preview.src = e.target.result;
+                                    preview.classList.remove('d-none');
+                                }
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                        }
+                    </script>
                 }
-            }
-        </script>
-    }
-

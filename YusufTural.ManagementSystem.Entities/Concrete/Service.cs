@@ -8,6 +8,10 @@ namespace YusufTural.ManagementSystem.Entities.Concrete
         public string Title { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
-        public string Url { get; set; } // Temiz URL için (seo-dostu-url)
+        public string Url { get; set; }
+
+        public string SeoTitle { get; set; }
+        public string SeoKeywords { get; set; }
+        public string SeoDescription { get; set; }
     }
 }

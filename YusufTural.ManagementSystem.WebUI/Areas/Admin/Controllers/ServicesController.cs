@@ -82,6 +82,9 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
             existingData.Title = model.Title;
             existingData.ShortDescription = model.ShortDescription;
             existingData.LongDescription = model.LongDescription;
+            existingData.SeoTitle = model.SeoTitle;
+            existingData.SeoKeywords = model.SeoKeywords;
+            existingData.SeoDescription = model.SeoDescription;
 
             // Eğer yeni bir resim seçildiyse; eskisini silip yenisini yüklüyoruz
             if (serviceImage != null)
