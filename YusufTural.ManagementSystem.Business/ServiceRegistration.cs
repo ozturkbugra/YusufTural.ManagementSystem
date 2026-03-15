@@ -22,6 +22,7 @@ namespace YusufTural.ManagementSystem.Business
             services.AddScoped<IStatisticService, StatisticManager>();
             services.AddScoped<ITestimonialService, TestimonialManager>();
             services.AddScoped<IVisitorService, VisitorManager>();
+            services.AddScoped<IReferenceService, ReferenceManager>();
         }
     }
 }

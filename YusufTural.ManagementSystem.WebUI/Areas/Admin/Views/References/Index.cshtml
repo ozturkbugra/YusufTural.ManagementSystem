@@ -1,0 +1,80 @@
+﻿@model List<Reference>
+@{
+    ViewData["Title"] = "Referans Yönetimi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Referanslar</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Panel</a></li>
+            <li class="breadcrumb-item active">Referanslar</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Referans Listesi</h5>
+                    <a asp-action="Create" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-lg me-1"></i> Yeni Referans
+                    </a>
+                </div>
+                <div class="card-body pt-3">
+                    <table class="table table-hover datatable" id="referenceTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 150px;">Logo</th>
+                                <th scope="col">ID</th>
+                                <th scope="col" data-sortable="false" class="text-center">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@item.LogoUrl" class="img-thumbnail" style="max-height: 50px; background-color: #f8f9fa;">
+                                    </td>
+                                    <td>@item.Id</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm"
+                                                   onclick="return confirm('Bu referansı silmek istediğinizden emin misiniz?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('referenceTable')) {
+                new simpleDatatables.DataTable('#referenceTable', {
+                    labels: {
+                        placeholder: "Ara...",
+                        perPage: "kayıt",
+                        noRows: "Referans bulunamadı.",
+                        info: "{rows} kayıttan {start} - {end} arası"
+                    }
+                });
+            }
+        });
+    </script>
+}
