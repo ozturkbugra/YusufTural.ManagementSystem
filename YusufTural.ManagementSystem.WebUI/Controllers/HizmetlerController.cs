@@ -36,6 +36,7 @@ namespace YusufTural.ManagementSystem.WebUI.Controllers
             ViewData["SeoDescription"] = service.SeoDescription;
             ViewData["SeoKeyword"] = service.SeoKeywords;
             ViewData["BodyClass"] = "service-details-page";
+            ViewData["SiteName"] = siteInfo?.Name;
 
             return View(service);
         }
