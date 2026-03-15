@@ -1,0 +1,56 @@
+﻿@model AboutUs
+@{
+    ViewData["Title"] = "Bilgileri Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Bilgileri Güncelle</h1>
+</div>
+
+<section class="section">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" id="aboutEditForm">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageUrl" />
+
+        <div class="card shadow-sm">
+            <div class="card-body pt-3">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center border-end">
+                        <label class="form-label fw-bold d-block text-start">Mevcut Görsel</label>
+                        <img id="editPreview" src="@Model.ImageUrl" class="img-fluid rounded mb-3 border shadow-sm" style="max-height: 250px;">
+                        <input type="file" name="aboutImage" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'editPreview')">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Hakkımızda Yazısı (Zengin Metin)</label>
+                        <div id="editQuill" style="height: 300px;">
+                            @Html.Raw(Model.Description)
+                        </div>
+                        <input type="hidden" asp-for="Description" id="editDescInput" />
+                    </div>
+                    <div class="col-12 mt-4 text-end">
+                        <button type="submit" class="btn btn-warning text-white px-5">Güncellemeyi Kaydet</button>
+                        <a asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        var quill = new Quill('#editQuill', { theme: 'snow' });
+        document.getElementById('aboutEditForm').onsubmit = function() {
+            document.getElementById('editDescInput').value = quill.root.innerHTML;
+        };
+        function previewImage(input, id) {
+            const preview = document.getElementById(id);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
