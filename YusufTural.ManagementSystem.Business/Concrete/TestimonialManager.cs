@@ -18,7 +18,7 @@ namespace YusufTural.ManagementSystem.Business.Concrete
             var allTestimonials = await _repository.GetAllAsync();
 
             // Kural: Aynı isimde başka bir yorum var mı? (Büyük/küçük harf duyarsız)
-            if (allTestimonials.Any(x => x.FullName.Trim().ToLower() == entity.FullName.Trim().ToLower()))
+            if (allTestimonials.Any(x => (x.FullName.Trim().ToLower() == entity.FullName.Trim().ToLower()) && (x.Title.Trim().ToLower() == entity.Title.Trim().ToLower())))
             {
                 throw new Exception("Bu isimle zaten bir müşteri yorumu mevcut!");
             }
@@ -31,7 +31,7 @@ namespace YusufTural.ManagementSystem.Business.Concrete
             var allTestimonials = _repository.GetAllAsync().GetAwaiter().GetResult();
 
             // Kural: Kendi ID'si hariç aynı isimle başka kayıt var mı?
-            if (allTestimonials.Any(x => x.Id != entity.Id && x.FullName.Trim().ToLower() == entity.FullName.Trim().ToLower()))
+            if (allTestimonials.Any(x => x.Id != entity.Id && x.FullName.Trim().ToLower() == entity.FullName.Trim().ToLower() && x.Title.Trim().ToLower() == entity.Title.Trim().ToLower()))
             {
                 throw new Exception("Güncellemek istediğiniz isim başka bir yorumda zaten kullanılıyor!");
             }

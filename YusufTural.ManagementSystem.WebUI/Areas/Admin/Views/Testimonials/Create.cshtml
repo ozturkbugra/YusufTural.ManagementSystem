@@ -1,0 +1,31 @@
+﻿@model Testimonial
+@{
+    ViewData["Title"] = "Yeni Yorum Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">Müşteri Deneyimi Tanımla</h5>
+            <form asp-action="Create" method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Müşteri Ad Soyad</label>
+                    <input type="text" asp-for="FullName" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Ünvan / Şirket</label>
+                        <input type="text" asp-for="Title" class="form-control" placeholder="Örn: Proje Müdürü">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Müşteri Yorumu</label>
+                            <textarea asp-for="Comment" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="col-12 text-end border-top pt-3 mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                            <button type="submit" class="btn btn-primary px-4">Yorumu Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
