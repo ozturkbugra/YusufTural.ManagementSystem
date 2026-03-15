@@ -58,6 +58,7 @@ namespace YusufTural.ManagementSystem.WebUI.Middlewares
                     };
 
                     await visitorService.TAddAsync(visitor);
+                    await visitorService.TSaveAsync();
                 }
             }
 

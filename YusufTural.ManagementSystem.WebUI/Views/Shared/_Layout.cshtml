@@ -74,14 +74,12 @@
 
                             <script>
                                     document.addEventListener("DOMContentLoaded", function () {
-                                        // Kullanıcı daha önce kabul etmiş mi kontrol et aga
                                         if (!localStorage.getItem("cookiesAccepted")) {
                                             document.getElementById("cookieBanner").style.display = "block";
                                         }
                                     });
 
                                     function acceptCookies() {
-                                        // Tercihi kaydet ve banner'ı kapat
                                         localStorage.setItem("cookiesAccepted", "true");
                                         document.getElementById("cookieBanner").style.display = "none";
                                     }
