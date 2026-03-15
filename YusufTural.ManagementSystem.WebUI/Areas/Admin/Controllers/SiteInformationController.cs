@@ -20,8 +20,16 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var values = await _siteInformationService.TGetListAsync();
-            return View(values);
+            try
+            {
+                var values = await _siteInformationService.TGetListAsync();
+                return View(values);
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Veriler yüklenirken hata oluştu: " + ex.Message, "danger");
+                return View();
+            }
         }
 
         [HttpGet]
@@ -33,70 +41,85 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SiteInformation model, IFormFile logoFile, IFormFile faviconFile, IFormFile bigFaviconFile, IFormFile videoFile)
         {
-            // Ekleme aşamasında dosya kontrolleri
-            if (logoFile != null) model.Logo = await FileHelper.UploadFile(logoFile, "images");
-            if (faviconFile != null) model.Favicon = await FileHelper.UploadFile(faviconFile, "images");
-            if (bigFaviconFile != null) model.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
-            if (videoFile != null) model.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
+            try
+            {
+                if (logoFile != null) model.Logo = await FileHelper.UploadFile(logoFile, "images");
+                if (faviconFile != null) model.Favicon = await FileHelper.UploadFile(faviconFile, "images");
+                if (bigFaviconFile != null) model.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
+                if (videoFile != null) model.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
 
-            await _siteInformationService.TAddAsync(model);
-            await _siteInformationService.TSaveAsync();
-            CreateMessage("Site bilgileri başarıyla eklendi aga!", "success");
-            return RedirectToAction("Index");
+                await _siteInformationService.TAddAsync(model);
+                await _siteInformationService.TSaveAsync();
+
+                CreateMessage("Site bilgileri başarıyla eklendi.", "success");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Kayıt sırasında bir hata oluştu: " + ex.Message, "danger");
+                return View(model);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var value = await _siteInformationService.TGetByIdAsync(id);
+            if (value == null) return NotFound();
             return View(value);
         }
 
-
         [HttpPost]
-        public IActionResult Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile)
+        public async Task<IActionResult> Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile)
         {
-            var existingData = _siteInformationService.TGetByIdAsync(model.Id).Result;
-
-            if (existingData == null) return NotFound();
-
-            existingData.Name = model.Name;
-            existingData.Slogan = model.Slogan;
-            existingData.SloganDescription = model.SloganDescription;
-            existingData.SeoTitle = model.SeoTitle;
-            existingData.SeoKeyword = model.SeoKeyword;
-            existingData.SeoDescription = model.SeoDescription;
-
-
-            if (logoFile != null)
+            try
             {
-                FileHelper.DeleteFile(existingData.Logo);
-                existingData.Logo = FileHelper.UploadFile(logoFile, "images").Result;
-            }
+                var existingData = await _siteInformationService.TGetByIdAsync(model.Id);
 
-            if (faviconFile != null)
+                if (existingData == null) return NotFound();
+
+                existingData.Name = model.Name;
+                existingData.Slogan = model.Slogan;
+                existingData.SloganDescription = model.SloganDescription;
+                existingData.SeoTitle = model.SeoTitle;
+                existingData.SeoKeyword = model.SeoKeyword;
+                existingData.SeoDescription = model.SeoDescription;
+
+                if (logoFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.Logo)) FileHelper.DeleteFile(existingData.Logo);
+                    existingData.Logo = await FileHelper.UploadFile(logoFile, "images");
+                }
+
+                if (faviconFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.Favicon)) FileHelper.DeleteFile(existingData.Favicon);
+                    existingData.Favicon = await FileHelper.UploadFile(faviconFile, "images");
+                }
+
+                if (bigFaviconFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.BigFavicon)) FileHelper.DeleteFile(existingData.BigFavicon);
+                    existingData.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
+                }
+
+                if (videoFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.VideoUrl)) FileHelper.DeleteFile(existingData.VideoUrl);
+                    existingData.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
+                }
+
+                _siteInformationService.TUpdate(existingData);
+                _siteInformationService.TSave();
+
+                CreateMessage("Site ayarları ve medya dosyaları başarıyla güncellendi.", "info");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
             {
-                FileHelper.DeleteFile(existingData.Favicon);
-                existingData.Favicon = FileHelper.UploadFile(faviconFile, "images").Result;
+                CreateMessage("Güncelleme sırasında hata oluştu: " + ex.Message, "danger");
+                return View(model);
             }
-
-            if (bigFaviconFile != null)
-            {
-                FileHelper.DeleteFile(existingData.BigFavicon);
-                existingData.BigFavicon = FileHelper.UploadFile(bigFaviconFile, "images").Result;
-            }
-
-            if (videoFile != null)
-            {
-                FileHelper.DeleteFile(existingData.VideoUrl);
-                existingData.VideoUrl = FileHelper.UploadFile(videoFile, "videos").Result;
-            }
-
-            _siteInformationService.TUpdate(existingData);
-            _siteInformationService.TSave();
-
-            CreateMessage("Site ayarları ve medya dosyaları jilet gibi güncellendi aga!", "info");
-            return RedirectToAction("Index");
         }
     }
 }

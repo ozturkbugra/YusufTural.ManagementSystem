@@ -19,9 +19,17 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var values = await _contactService.TGetListAsync();
-            var data = values.FirstOrDefault();
-            return View(data);
+            try
+            {
+                var values = await _contactService.TGetListAsync();
+                var data = values.FirstOrDefault();
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Veriler listelenirken bir hata oluştu: " + ex.Message, "danger");
+                return View();
+            }
         }
 
         [HttpGet]
@@ -33,10 +41,18 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Contact model)
         {
-            await _contactService.TAddAsync(model);
-            await _contactService.TSaveAsync();
-            CreateMessage("İletişim bilgileri başarıyla sisteme eklendi.", "success");
-            return RedirectToAction("Index");
+            try
+            {
+                await _contactService.TAddAsync(model);
+                await _contactService.TSaveAsync();
+                CreateMessage("İletişim bilgileri başarıyla sisteme eklendi.", "success");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Kayıt sırasında hata oluştu: " + ex.Message, "danger");
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -48,25 +64,32 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Contact model)
+        public async Task<IActionResult> Edit(Contact model)
         {
-            var existingData = _contactService.TGetByIdAsync(model.Id).Result;
-            if (existingData == null) return NotFound();
+            try
+            {
+                var existingData = await _contactService.TGetByIdAsync(model.Id);
+                if (existingData == null) return NotFound();
 
-            // Alan eşleştirmeleri
-            existingData.Address = model.Address;
-            existingData.PhoneNumber = model.PhoneNumber;
-            existingData.WhatsAppNumber = model.WhatsAppNumber;
-            existingData.Email = model.Email;
-            existingData.WorkingHours = model.WorkingHours;
-            existingData.MapLink = model.MapLink;
-            existingData.InstagramLink = model.InstagramLink;
+                existingData.Address = model.Address;
+                existingData.PhoneNumber = model.PhoneNumber;
+                existingData.WhatsAppNumber = model.WhatsAppNumber;
+                existingData.Email = model.Email;
+                existingData.WorkingHours = model.WorkingHours;
+                existingData.MapLink = model.MapLink;
+                existingData.InstagramLink = model.InstagramLink;
 
-            _contactService.TUpdate(existingData);
-            _contactService.TSave();
+                _contactService.TUpdate(existingData);
+                _contactService.TSave();
 
-            CreateMessage("İletişim bilgileri başarıyla güncellendi.", "info");
-            return RedirectToAction("Index");
+                CreateMessage("İletişim bilgileri başarıyla güncellendi.", "info");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Güncelleme sırasında hata oluştu: " + ex.Message, "danger");
+                return View(model);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
     [Authorize]
     public class ServicesController : AdminBaseController
     {
-        private readonly IServiceService _serviceService; // Business katmanındaki servisin
+        private readonly IServiceService _serviceService;
 
         public ServicesController(IServiceService serviceService)
         {
@@ -19,8 +19,16 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var values = await _serviceService.TGetListAsync();
-            return View(values);
+            try
+            {
+                var values = await _serviceService.TGetListAsync();
+                return View(values);
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Hizmetler listelenirken hata oluştu: " + ex.Message, "danger");
+                return View();
+            }
         }
 
         [HttpGet]
@@ -32,76 +40,92 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Service model, IFormFile serviceImage)
         {
-            if (serviceImage != null)
-                model.ImageUrl = await FileHelper.UploadFile(serviceImage, "services");
+            try
+            {
+                if (serviceImage != null)
+                    model.ImageUrl = await FileHelper.UploadFile(serviceImage, "services");
 
-            await _serviceService.TAddAsync(model);
-            await _serviceService.TSaveAsync();
+                await _serviceService.TAddAsync(model);
+                await _serviceService.TSaveAsync();
 
-            CreateMessage("Yeni hizmet başarıyla eklendi aga!", "success");
-            return RedirectToAction("Index");
+                CreateMessage("Yeni hizmet başarıyla eklendi.", "success");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Kayıt sırasında hata oluştu: " + ex.Message, "danger");
+                return View(model);
+            }
         }
 
-        // 2. Silme İşlemi (İstediğin Kritik Kısım)
         public async Task<IActionResult> Delete(int id)
         {
-            var value = await _serviceService.TGetByIdAsync(id);
-            if (value == null) return NotFound();
+            try
+            {
+                var value = await _serviceService.TGetByIdAsync(id);
+                if (value == null) return NotFound();
 
-            // Önce sunucudaki resmi temizliyoruz
-            FileHelper.DeleteFile(value.ImageUrl);
+                if (!string.IsNullOrEmpty(value.ImageUrl))
+                {
+                    FileHelper.DeleteFile(value.ImageUrl);
+                }
 
-            // Sonra veritabanından kaydı uçuruyoruz
-            _serviceService.TDelete(value);
-            _serviceService.TSave();
+                _serviceService.TDelete(value);
+                _serviceService.TSave();
 
-            CreateMessage("Hizmet ve bağlı görseli başarıyla silindi.", "warning");
-            return RedirectToAction("Index");
+                CreateMessage("Hizmet ve bağlı görseli başarıyla silindi.", "warning");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                CreateMessage("Silme işlemi başarısız: " + ex.Message, "danger");
+                return RedirectToAction("Index");
+            }
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var value = await _serviceService.TGetByIdAsync(id);
             if (value == null) return NotFound();
-
             return View(value);
         }
 
-        // 4. Düzenleme İşlemi - POST
         [HttpPost]
-        public IActionResult Edit(Service model, IFormFile? serviceImage)
+        public async Task<IActionResult> Edit(Service model, IFormFile? serviceImage)
         {
-            // Veritabanındaki mevcut veriyi senkron olarak çekiyoruz
-            var existingData = _serviceService.TGetByIdAsync(model.Id).Result;
-
-            if (existingData == null) return NotFound();
-
-            // Metin alanlarını güncelliyoruz
-            existingData.Title = model.Title;
-            existingData.ShortDescription = model.ShortDescription;
-            existingData.LongDescription = model.LongDescription;
-            existingData.SeoTitle = model.SeoTitle;
-            existingData.SeoKeywords = model.SeoKeywords;
-            existingData.SeoDescription = model.SeoDescription;
-
-            // Eğer yeni bir resim seçildiyse; eskisini silip yenisini yüklüyoruz
-            if (serviceImage != null)
+            try
             {
-                // Eski dosyayı sunucudan temizle
-                FileHelper.DeleteFile(existingData.ImageUrl);
+                var existingData = await _serviceService.TGetByIdAsync(model.Id);
+                if (existingData == null) return NotFound();
 
-                // Yeni dosyayı yükle ve yolunu güncelle
-                existingData.ImageUrl = FileHelper.UploadFile(serviceImage, "services").Result;
+                existingData.Title = model.Title;
+                existingData.ShortDescription = model.ShortDescription;
+                existingData.LongDescription = model.LongDescription;
+                existingData.SeoTitle = model.SeoTitle;
+                existingData.SeoKeywords = model.SeoKeywords;
+                existingData.SeoDescription = model.SeoDescription;
+
+                if (serviceImage != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.ImageUrl))
+                    {
+                        FileHelper.DeleteFile(existingData.ImageUrl);
+                    }
+                    existingData.ImageUrl = await FileHelper.UploadFile(serviceImage, "services");
+                }
+
+                _serviceService.TUpdate(existingData);
+                _serviceService.TSave();
+
+                CreateMessage("Hizmet bilgileri başarıyla güncellendi.", "info");
+                return RedirectToAction("Index");
             }
-
-            // Değişiklikleri mühürle
-            _serviceService.TUpdate(existingData);
-            _serviceService.TSave();
-
-            CreateMessage("Hizmet bilgileri başarıyla güncellendi aga!", "info");
-            return RedirectToAction("Index");
+            catch (Exception ex)
+            {
+                CreateMessage("Güncelleme sırasında hata oluştu: " + ex.Message, "danger");
+                return View(model);
+            }
         }
     }
 }
