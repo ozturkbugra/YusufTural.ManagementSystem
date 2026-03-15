@@ -1,0 +1,57 @@
+﻿@model SiteScript
+@{
+    ViewData["Title"] = "Script Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Script Bilgilerini Güncelle</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Scriptler</a></li>
+            <li class="breadcrumb-item active">Düzenle</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <form asp-action="Edit" method="post" class="row g-3">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">Script Başlığı</label>
+                    <input type="text" asp-for="Title" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Pozisyon</label>
+                        <select asp-for="Position" class="form-select" required>
+                            <option value="1">Head</option>
+                            <option value="2">Body Start</option>
+                            <option value="3">Footer</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Script İçeriği</label>
+                        <textarea asp-for="Content" class="form-control" rows="8"
+                                  style="font-family: 'JetBrains Mono', monospace; font-size: 13px; background-color: rgba(128,128,128,0.05);"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" asp-for="IsActive">
+                                <label class="form-check-label fw-bold">Script Aktif</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 text-end border-top pt-3">
+                            <a asp-action="Index" class="btn btn-secondary me-2">Vazgeç</a>
+                            <button type="submit" class="btn btn-warning text-white px-4">Değişiklikleri Uygula</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
