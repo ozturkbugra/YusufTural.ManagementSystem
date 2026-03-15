@@ -1,0 +1,39 @@
+﻿@model Faq
+@{
+    ViewData["Title"] = "Yeni Soru Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">Yeni Soru & Cevap Oluştur</h5>
+            <form asp-action="Create" method="post" id="faqForm">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Soru Metni</label>
+                        <input type="text" asp-for="Question" class="form-control" placeholder="Örn: Çalışma saatleriniz nedir?" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Cevap Metni</label>
+                            <div id="quillEditor" style="height: 250px;"></div>
+                            <input type="hidden" asp-for="Answer" id="answerInput" />
+                        </div>
+                        <div class="col-12 text-end border-top pt-3">
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                            <button type="submit" class="btn btn-primary px-4">Kaydet</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    @section Scripts {
+        <script>
+            var quill = new Quill('#quillEditor', { theme: 'snow' });
+            document.getElementById('faqForm').onsubmit = function() {
+                document.getElementById('answerInput').value = quill.root.innerHTML;
+            };
+        </script>
+    }

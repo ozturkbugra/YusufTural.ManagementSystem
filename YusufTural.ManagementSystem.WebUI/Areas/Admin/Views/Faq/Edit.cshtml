@@ -1,0 +1,42 @@
+﻿@model Faq
+@{
+    ViewData["Title"] = "Soruyu Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">Kayıt Düzenleme</h5>
+            <form asp-action="Edit" method="post" id="faqEditForm">
+                <input type="hidden" asp-for="Id" />
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Soru Metni</label>
+                        <input type="text" asp-for="Question" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Cevap Metni</label>
+                            <div id="editQuill" style="height: 250px;">
+                                @Html.Raw(Model.Answer)
+                            </div>
+                            <input type="hidden" asp-for="Answer" id="editAnswerInput" />
+                        </div>
+                        <div class="col-12 text-end border-top pt-3">
+                            <a asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+                            <button type="submit" class="btn btn-warning text-white px-4">Güncelle</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    @section Scripts {
+        <script>
+            var quill = new Quill('#editQuill', { theme: 'snow' });
+            document.getElementById('faqEditForm').onsubmit = function() {
+                document.getElementById('editAnswerInput').value = quill.root.innerHTML;
+            };
+        </script>
+    }

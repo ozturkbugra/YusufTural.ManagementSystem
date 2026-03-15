@@ -62,6 +62,44 @@
                                                             <script src="~/admin/assets/js/theme.js"></script>
                                                             <script src="~/admin/assets/js/main.js"></script>
                                                             <script src="~/admin/assets/js/apps-sidebar-toggle.js"></script>
+                                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                                                            <script>
+                                                                document.addEventListener('DOMContentLoaded', function () {
+                                                                    // AdminBaseController'dan gelen mesajları alıyoruz
+                                                                    const message = `@Html.Raw(TempData["AdminMessage"])`;
+                                                                    const type = "@TempData["AdminMessageType"]";
+
+                                                                    // data-theme="dark" kontrolünü yapıyoruz
+                                                                    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+
+                                                                    if (message && message !== "null" && message !== "") {
+                                                                        Swal.fire({
+                                                                            title: type === 'success' ? 'Başarılı' : (type === 'danger' ? 'Hata' : 'Bilgi'),
+                                                                            text: message,
+                                                                            icon: type === 'danger' ? 'error' : (type === 'info' ? 'info' : type),
+                                                                            confirmButtonText: 'Tamam',
+                                                                            confirmButtonColor: '#4154f1', 
+                
+                                                                            // Dark Mode Uyumluluk Ayarları (Kapsamlı)
+                                                                            background: isDarkMode ? '#1e1e2d' : '#ffffff',
+                                                                            color: isDarkMode ? '#ffffff' : '#444444',
+                                                                            iconColor: type === 'danger' ? '#dc3545' : (type === 'success' ? '#198754' : '#0dcaf0'),
+                
+                                                                            // Animasyon Ayarları
+                                                                            showClass: {
+                                                                                popup: 'animate__animated animate__fadeInDown'
+                                                                            },
+                                                                            hideClass: {
+                                                                                popup: 'animate__animated animate__fadeOutUp'
+                                                                            },
+                
+                                                                            // Dışarı tıklayınca kapanmasın (isteğe bağlı, kurumsal durur)
+                                                                            allowOutsideClick: false
+                                                                        });
+                                                                    }
+                                                                });
+                                                            </script>
 
                                                             <script>
                                                                         document.addEventListener('DOMContentLoaded', function () {
