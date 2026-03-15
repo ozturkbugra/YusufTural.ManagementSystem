@@ -17,8 +17,13 @@ namespace YusufTural.ManagementSystem.WebUI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var testimonials = await _testimonialService.TGetListAsync();
-            var siteInfo = (await _siteInfoService.TGetListAsync()).FirstOrDefault();
 
+            if (testimonials == null || !testimonials.Any())
+            {
+                return Content(string.Empty);
+            }
+
+            var siteInfo = (await _siteInfoService.TGetListAsync()).FirstOrDefault();
             ViewBag.TestimonialBg = siteInfo?.BigImageUrl ?? "/site/assets/img/arkaplan.png";
 
             return View(testimonials);

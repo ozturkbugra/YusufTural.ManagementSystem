@@ -9,8 +9,14 @@ namespace YusufTural.ManagementSystem.WebUI.ViewComponents
         public ServicesViewComponent(IServiceService service) => _service = service;
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var data = await _service.TGetListAsync();
-            return View(data);
+            var values = await _service.TGetListAsync();
+
+            if (values == null || !values.Any())
+            {
+                return Content(string.Empty);
+            }
+
+            return View(values);
         }
     }
 }

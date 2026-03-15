@@ -15,6 +15,12 @@ namespace YusufTural.ManagementSystem.WebUI.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var values = (await _contactService.TGetListAsync()).FirstOrDefault();
+
+            if (values == null)
+            {
+                return Content(string.Empty);
+            }
+
             return View(values);
         }
     }
