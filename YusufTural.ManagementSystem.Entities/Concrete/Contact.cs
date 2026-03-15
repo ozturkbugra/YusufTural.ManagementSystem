@@ -9,7 +9,7 @@ namespace YusufTural.ManagementSystem.Entities.Concrete
         public string WhatsAppNumber { get; set; }
         public string Email { get; set; }
         public string WorkingHours { get; set; }
-        public string MapLink { get; set; }
-        public string InstagramLink { get; set; }
+        public string? MapLink { get; set; }
+        public string? InstagramLink { get; set; }
     }
 }

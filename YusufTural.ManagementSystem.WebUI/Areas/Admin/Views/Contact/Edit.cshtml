@@ -1,0 +1,47 @@
+﻿@model Contact
+@{
+    ViewData["Title"] = "İletişim Bilgilerini Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">İletişim Bilgilerini Düzenle</h5>
+            <form asp-action="Edit" method="post" class="row g-3">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Telefon Numarası</label>
+                    <input type="text" asp-for="PhoneNumber" class="form-control phone-mask" maxlength="14" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">WhatsApp Hattı</label>
+                        <input type="text" asp-for="WhatsAppNumber" class="form-control phone-mask" maxlength="14">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">E-posta Adresi</label>
+                            <input type="email" asp-for="Email" class="form-control" required>
+                            </div>
+                
+                            <div class="col-12 mt-4 text-end border-top pt-3">
+                                <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                                <button type="submit" class="btn btn-warning text-white px-4">Güncelle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            @section Scripts {
+                <script>
+                    document.querySelectorAll('.phone-mask').forEach(function (input) {
+                        input.addEventListener('input', function (e) {
+                            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                            e.target.value = !x[2] ? x[1] : x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
+                        });
+                    });
+                </script>
+            }

@@ -1,0 +1,70 @@
+﻿@model Contact
+@{
+    ViewData["Title"] = "İletişim Bilgisi Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>İletişim Bilgisi Tanımla</h1>
+</div>
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">Kurumsal İletişim Detayları</h5>
+            <form asp-action="Create" method="post" class="row g-3">
+                
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Telefon Numarası</label>
+                    <input type="text" asp-for="PhoneNumber" class="form-control phone-mask" placeholder="0___ ___ __ __" maxlength="14" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">WhatsApp Hattı</label>
+                        <input type="text" asp-for="WhatsAppNumber" class="form-control phone-mask" placeholder="0___ ___ __ __" maxlength="14">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">E-posta Adresi</label>
+                            <input type="email" asp-for="Email" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Çalışma Saatleri</label>
+                                <input type="text" asp-for="WorkingHours" class="form-control">
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Açık Adres</label>
+                                    <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Google Harita Linki</label>
+                                    <input type="text" asp-for="MapLink" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Instagram Profil Linki</label>
+                                        <input type="text" asp-for="InstagramLink" class="form-control">
+                                        </div>
+
+                                        <div class="col-12 mt-4 text-end border-top pt-3">
+                                            <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                                            <button type="submit" class="btn btn-primary px-4">Kaydet</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </section>
+
+                        @section Scripts {
+                            <script>
+                                document.querySelectorAll('.phone-mask').forEach(function (input) {
+                                    input.addEventListener('input', function (e) {
+                                        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                                        e.target.value = !x[2] ? x[1] : x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
+                                    });
+                                });
+                            </script>
+                        }

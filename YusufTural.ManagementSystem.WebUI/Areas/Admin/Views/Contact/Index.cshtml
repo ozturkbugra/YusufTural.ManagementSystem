@@ -1,0 +1,59 @@
+﻿@model Contact
+@{
+    ViewData["Title"] = "İletişim Bilgileri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>İletişim Yönetimi</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Panel</a></li>
+            <li class="breadcrumb-item active">İletişim</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-12">
+            @if (Model == null)
+            {
+                <div class="card shadow-sm text-center py-5">
+                    <div class="card-body">
+                        <i class="bi bi-geo-alt text-primary display-4"></i>
+                        <h4 class="mt-3">İletişim Bilgisi Tanımlanmamış</h4>
+                        <p class="text-muted">Müşterilerinizin size ulaşabilmesi için gerekli bilgileri şimdi ekleyebilirsiniz.</p>
+                        <a asp-action="Create" class="btn btn-primary px-4">Yeni Bilgi Ekle</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+                        <h5 class="card-title mb-0">Aktif İletişim Detayları</h5>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm text-white">Düzenle</a>
+                    </div>
+                    <div class="card-body pt-3">
+                        <div class="row g-3">
+                            <div class="col-md-6 border-end">
+                                <p><strong><i class="bi bi-telephone me-2"></i>Telefon:</strong> @Model.PhoneNumber</p>
+                                <p><strong><i class="bi bi-whatsapp me-2"></i>WhatsApp:</strong> @Model.WhatsAppNumber</p>
+                                <p><strong><i class="bi bi-envelope me-2"></i>E-posta:</strong> @Model.Email</p>
+                                <p><strong><i class="bi bi-clock me-2"></i>Çalışma Saatleri:</strong> @Model.WorkingHours</p>
+                            </div>
+                            <div class="col-md-6 px-md-4">
+                                <p><strong><i class="bi bi-geo-alt me-2"></i>Adres:</strong> @Model.Address</p>
+                                <p><strong><i class="bi bi-instagram me-2"></i>Instagram:</strong> @Model.InstagramLink</p>
+                                <div class="mt-2 small text-muted text-truncate">
+                                    <strong><i class="bi bi-map me-2"></i>Harita Linki:</strong> @Model.MapLink
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
