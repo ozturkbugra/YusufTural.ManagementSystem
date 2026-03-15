@@ -9,32 +9,22 @@
         </button>
 
         <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="header-brand">
-            <span class="header-logo">
-            </span>
             <span class="header-context">
                 <strong class="header-context-title">Admin Panel</strong>
             </span>
         </a>
     </div>
 
+    <div class="header-search-wrap">
+        <div class="search-form">
+            <i class="bi bi-search search-icon"></i>
+            <input type="search" class="sidebar-search-input" placeholder="Sayfalarda ara..." autocomplete="off">
+            <kbd class="search-shortcut">/</kbd>
+        </div>
+    </div>
+
     <div class="header-right">
         <div class="header-actions-desktop">
-            
-            <div class="header-search-wrap">
-                <div class="search-form">
-                    <i class="bi bi-search search-icon"></i>
-                    <input type="search" class="sidebar-search-input" placeholder="Ara..." autocomplete="off">
-                    <kbd class="search-shortcut">/</kbd>
-                </div>
-            </div>
-
-            <div class="mobile-search">
-                <div class="search-form">
-                    <input type="search" class="sidebar-search-input" placeholder="Ara..." autocomplete="off">
-                    <button type="button"><i class="bi bi-search"></i></button>
-                </div>
-            </div>
-
             <button class="header-action theme-toggle" title="Tema Değiştir">
                 <i class="ph-light ph-moon-stars theme-icon-dark"></i>
                 <i class="ph-light ph-sun theme-icon-light"></i>
@@ -52,15 +42,15 @@
                     <div class="dropdown-menu dropdown-menu-end user-menu">
                         <div class="user-menu-header">
                             <img src="~/admin/assets/img/profile-img.webp" alt="User" class="user-menu-avatar">
-                                <div class="user-menu-info">
-                                    <div class="user-menu-name">@User.Identity.Name</div>
-                                    <div class="user-menu-email">Sistem Yöneticisi</div>
+                                <div class="user-brief text-start ms-2">
+                                    <div class="user-menu-name fw-bold">@User.Identity.Name</div>
+                                    <div class="user-menu-email small text-muted">Sistem Yöneticisi</div>
                                 </div>
                             </div>
                             <div class="user-menu-body">
-                                <a class="user-menu-item" asp-area="Admin" asp-controller="AppUser" asp-action="Index">
+                                <a class="user-menu-item" asp-area="Admin" asp-controller="AppUsers" asp-action="Index">
                                     <i class="bi bi-person"></i>
-                                    <span>Profilim</span>
+                                    <span>Profil Ayarlarım</span>
                                 </a>
                                 <a class="user-menu-item" asp-area="Admin" asp-controller="SiteInformation" asp-action="Index">
                                     <i class="bi bi-gear"></i>
@@ -76,5 +66,42 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="header-actions-mobile">
+                    <button class="header-action search-toggle" title="Arama Yap">
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                    <button class="header-action mobile-menu-toggle" title="Daha Fazla">
+                        <i class="bi bi-three-dots"></i>
+                    </button>
+                </div>
             </div>
         </header>
+
+        <div class="mobile-search">
+            <div class="search-form">
+                <input type="search" class="sidebar-search-input" placeholder="Ara..." autocomplete="off">
+                <button type="button"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+
+        <div class="mobile-header-menu">
+            <div class="mobile-header-menu-content">
+                <button class="mobile-menu-item theme-toggle" title="Tema Değiştir">
+                    <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                    <i class="ph-light ph-sun theme-icon-light"></i>
+                    <span class="mobile-menu-label">Karanlık/Aydınlık</span>
+                </button>
+
+                <a asp-area="Admin" asp-controller="AppUsers" asp-action="Index" class="mobile-menu-item">
+                    <i class="bi bi-person"></i>
+                    <span class="mobile-menu-label">Profilim</span>
+                </a>
+
+                <a asp-area="Admin" asp-controller="Login" asp-action="Logout" class="mobile-menu-item text-danger">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="mobile-menu-label fw-bold">Çıkış Yap</span>
+                </a>
+            </div>
+        </div>
