@@ -1,0 +1,50 @@
+﻿@model Vehicle
+@{
+    ViewData["Title"] = "Yeni Araç Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body pt-3">
+                    <h5 class="card-title">Araç Bilgilerini Giriniz</h5>
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Araç Görseli</label>
+                            <input type="file" name="vehicleImage" class="form-control" accept="image/*" onchange="previewImage(this)" required>
+                        </div>
+                        <div class="col-12 text-center my-3">
+                            <img id="imgPreview" src="#" class="img-fluid rounded border d-none" style="max-height: 200px;">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Araç Açıklaması</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Örn: 20 tonluk paslanmaz çelik tanker... (BOŞ BIRAKILIRSA YUSUF TURAL TANKER SU TAŞIMACILIK YAZAR)"></textarea>
+                        </div>
+                        <div class="col-12 text-end border-top pt-3 mt-4">
+                            <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                            <button type="submit" class="btn btn-primary px-4">Aracı Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imgPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
