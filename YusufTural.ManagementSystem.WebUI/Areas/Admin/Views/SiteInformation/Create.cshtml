@@ -69,6 +69,11 @@
                                             <img id="logoPreview" src="#" class="mt-2 img-thumbnail d-none" style="max-height: 80px;">
                                         </div>
                                         <div class="mb-3">
+                                            <label class="form-label fw-bold">Arka Plan Görseli</label>
+                                            <input type="file" name="bigImageFile" class="form-control" accept="image/*" onchange="previewImage(this, 'bigImagePreview')">
+                                            <img id="bigImagePreview" src="#" class="mt-2 img-thumbnail d-none" style="max-height: 120px;">
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="form-label fw-bold">Favicon (16x16)</label>
                                             <input type="file" name="faviconFile" class="form-control" accept="image/*">
                                         </div>

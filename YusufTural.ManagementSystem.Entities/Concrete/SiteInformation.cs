@@ -15,6 +15,8 @@ namespace YusufTural.ManagementSystem.Entities.Concrete
         public string BigFavicon { get; set; }
 
         public string? VideoUrl { get; set; }
+        public string? BigImageUrl { get; set; }
+
 
     }
 }

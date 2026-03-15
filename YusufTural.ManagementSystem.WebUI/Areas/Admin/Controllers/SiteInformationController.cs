@@ -39,7 +39,7 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SiteInformation model, IFormFile logoFile, IFormFile faviconFile, IFormFile bigFaviconFile, IFormFile videoFile)
+        public async Task<IActionResult> Create(SiteInformation model, IFormFile logoFile, IFormFile faviconFile, IFormFile bigFaviconFile, IFormFile videoFile, IFormFile bigImageFile)
         {
             try
             {
@@ -47,6 +47,7 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
                 if (faviconFile != null) model.Favicon = await FileHelper.UploadFile(faviconFile, "images");
                 if (bigFaviconFile != null) model.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
                 if (videoFile != null) model.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
+                if (bigImageFile != null) model.BigImageUrl = await FileHelper.UploadFile(bigImageFile, "images");
 
                 await _siteInformationService.TAddAsync(model);
                 await _siteInformationService.TSaveAsync();
@@ -70,12 +71,11 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile)
+        public async Task<IActionResult> Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile, IFormFile? bigImageFile)
         {
             try
             {
                 var existingData = await _siteInformationService.TGetByIdAsync(model.Id);
-
                 if (existingData == null) return NotFound();
 
                 existingData.Name = model.Name;
@@ -85,28 +85,31 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
                 existingData.SeoKeyword = model.SeoKeyword;
                 existingData.SeoDescription = model.SeoDescription;
 
+                // Dosya Güncellemeleri
                 if (logoFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.Logo)) FileHelper.DeleteFile(existingData.Logo);
                     existingData.Logo = await FileHelper.UploadFile(logoFile, "images");
                 }
-
                 if (faviconFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.Favicon)) FileHelper.DeleteFile(existingData.Favicon);
                     existingData.Favicon = await FileHelper.UploadFile(faviconFile, "images");
                 }
-
                 if (bigFaviconFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.BigFavicon)) FileHelper.DeleteFile(existingData.BigFavicon);
                     existingData.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
                 }
-
                 if (videoFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.VideoUrl)) FileHelper.DeleteFile(existingData.VideoUrl);
                     existingData.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
+                }
+                if (bigImageFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.BigImageUrl)) FileHelper.DeleteFile(existingData.BigImageUrl);
+                    existingData.BigImageUrl = await FileHelper.UploadFile(bigImageFile, "images");
                 }
 
                 _siteInformationService.TUpdate(existingData);

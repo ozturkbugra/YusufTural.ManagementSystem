@@ -21,6 +21,7 @@
         <input type="hidden" asp-for="Favicon" />
         <input type="hidden" asp-for="BigFavicon" />
         <input type="hidden" asp-for="VideoUrl" />
+        <input type="hidden" asp-for="BigImageUrl" />
 
         <div class="row g-4">
             <div class="col-lg-8">
@@ -77,6 +78,15 @@
                                                 <img id="logoPreview" src="@Model.Logo" alt="Mevcut Logo" class="img-thumbnail" style="max-height: 80px;">
                                             </div>
                                             <input type="file" name="logoFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'logoPreview')">
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold">Arka Plan Görseli</label>
+                                            <div class="mb-2">
+                                                <img id="bigImagePreview" src="@Model.BigImageUrl" alt="Mevcut Hero" class="img-thumbnail" style="max-height: 120px;">
+                                            </div>
+                                            <input type="file" name="bigImageFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'bigImagePreview')">
+                                            <div class="form-text">(Giriş) bölümünün ana arka plan resmi.</div>
                                         </div>
 
                                         <div class="mb-4">
