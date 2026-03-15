@@ -1,0 +1,44 @@
+﻿@model List<Testimonial>
+
+<section id="testimonials" class="testimonials section dark-background">
+    <img src="@ViewBag.TestimonialBg" class="testimonials-bg" alt="Arka Plan">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="swiper init-swiper">
+            <script type="application/json" class="swiper-config">
+                            {
+                              "loop": true,
+                              "speed": 600,
+                              "autoplay": { "delay": 5000 },
+                              "slidesPerView": "auto",
+                              "pagination": { "el": ".swiper-pagination", "type": "bullets", "clickable": true }
+                            }
+            </script>
+            
+            <div class="swiper-wrapper">
+                @foreach (var item in Model)
+                {
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="/site/assets/img/avatar.png" class="testimonial-img" alt="@item.FullName">
+                            <h3>@item.FullName.ToUpper()</h3>
+                            <h4>@item.Title.ToUpper()</h4>
+                            <div class="stars">
+                                @for (int s = 0; s < 5; s++)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                            </div>
+                            <p>
+                                <i class="bi bi-quote quote-icon-left"></i>
+                                <span>@item.Comment.ToUpper()</span>
+                                <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>

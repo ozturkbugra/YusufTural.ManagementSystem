@@ -1,0 +1,34 @@
+﻿@model List<Service>
+<section id="services" class="services section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>HİZMETLERİMİZ</h2>
+        <p>ANKARA TANKER SU VE NAKLİYE ÇÖZÜMLERİMİZ</p>
+    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-5">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in">
+                    <div class="service-item">
+                        <div class="img">
+                            <img src="@item.ImageUrl" class="img-fluid" alt="@item.Title">
+                        </div>
+                        <div class="details position-relative text-center">
+                            <div class="icon"><i class="bi bi-droplet-half"></i></div>
+                            
+                            <a href="/hizmet/@item.Url">
+                                <h3>@item.Title.ToUpper()</h3>
+                            </a>
+                            
+                            <p>@item.ShortDescription.ToUpper()</p>
+                            
+                            <a href="/hizmet/@item.Url" class="read-more-btn">
+                                DETAYLI BİLGİ <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

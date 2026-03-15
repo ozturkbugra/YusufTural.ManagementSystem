@@ -1,0 +1,69 @@
+﻿@model Contact
+
+<section id="contact" class="contact section">
+
+    <div class="container section-title" data-aos="fade-up">
+        <h2>İLETİŞİM</h2>
+        <p>BİZE ULAŞIN VE HEMEN TEKLİF ALIN</p>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>ADRESİMİZ</h3>
+                    <p>@Model?.Address.ToUpper()</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+                    <i class="bi bi-telephone"></i>
+                    <h3>TELEFON NUMARAMIZ</h3>
+                    <p>@Model?.PhoneNumber</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <a href="https://wa.me/9@(Model?.WhatsAppNumber.Replace(" ", ""))" target="_blank" class="w-100 h-100">
+                    <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400" style="background: rgba(37, 211, 102, 0.1); border-color: #25d366;">
+                        <i class="bi bi-whatsapp" style="color: #25d366;"></i>
+                        <h3 style="color: #25d366;">WHATSAPP HATTI</h3>
+                        <p>TIKLA VE SİPARİŞ VER</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="500">
+                    <i class="bi bi-envelope"></i>
+                    <h3>E-POSTA ADRESİMİZ</h3>
+                    <p>@Model?.Email.ToUpper()</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="600">
+                    <i class="bi bi-clock"></i>
+                    <h3>ÇALIŞMA SAATLERİ</h3>
+                    <p>@Model?.WorkingHours.ToUpper()</p>
+                </div>
+            </div>
+
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model?.MapLink))
+        {
+            <div class="mt-5" data-aos="fade-up" data-aos-delay="700">
+                <iframe style="border:0; width: 100%; height: 350px;"
+                        src="@Model.MapLink"
+                        frameborder="0" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        }
+
+    </div>
+
+</section>

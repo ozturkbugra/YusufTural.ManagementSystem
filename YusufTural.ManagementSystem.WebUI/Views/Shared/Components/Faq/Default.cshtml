@@ -1,0 +1,44 @@
+﻿@model List<Faq>
+
+<section id="faq" class="faq section light-background">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>SIKÇA SORULAN SORULAR</h2>
+        <p>MERAK ETTİĞİNİZ TÜM SORULARIN CEVAPLARI BURADA</p>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+
+                @* Kapsayıcı ID'si akordiyonun tekli açılması için önemli *@
+                <div class="faq-container" id="faqlist">
+
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <div class="faq-item">
+                            @* data-bs-toggle ve target ile tüm h3 tıklanabilir yapıldı *@
+                            <h3 class="@(i == 0 ? "" : "collapsed")"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#faq-content-@i"
+                                style="cursor: pointer;">
+                                @Model[i].Question.ToUpper()
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </h3>
+
+                            @* data-bs-parent sayesinde biri açılınca diğeri kapanır *@
+                            <div id="faq-content-@i"
+                                 class="collapse @(i == 0 ? "show" : "")"
+                                 data-bs-parent="#faqlist">
+                                <div class="faq-content">
+                                    <p>@Html.Raw(Model[i].Answer.ToUpper())</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
