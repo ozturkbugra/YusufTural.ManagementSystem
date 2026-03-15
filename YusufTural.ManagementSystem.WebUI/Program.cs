@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using YusufTural.ManagementSystem.Business;
+using YusufTural.ManagementSystem.Business.Abstract;
+using YusufTural.ManagementSystem.Business.Concrete;
 using YusufTural.ManagementSystem.DataAccess;
 using YusufTural.ManagementSystem.DataAccess.Concrete;
+using YusufTural.ManagementSystem.WebUI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,8 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
     options.MultipartBodyLengthLimit = 104857600; // 100 MB limit
 });
 
+builder.Services.AddScoped<IVisitorService, VisitorManager>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -42,16 +47,17 @@ using (var scope = app.Services.CreateScope())
     await DatabaseSeeder.SeedAsync(context);
 }
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
+app.UseMiddleware<VisitorTrackingMiddleware>();
 
 app.UseRouting();
 

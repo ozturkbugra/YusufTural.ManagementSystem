@@ -54,6 +54,38 @@
                             <script src="~/site/assets/js/main.js"></script>
 
                             @await RenderSectionAsync("Scripts", required: false)
+
+                            <div id="cookieBanner" class="cookie-banner-box" style="display: none;">
+                                <div class="container">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-9 cookie-content">
+                                            <p>
+                                                <i class="bi bi-info-circle-fill me-2"></i>
+                                                SİTEMİZDE SİZE DAHA İYİ HİZMET VEREBİLMEK İÇİN ÇEREZLER KULLANILMAKTADIR.
+                                                SİTEMİZİ KULLANMAYA DEVAM EDEREK ÇEREZ KULLANIMINI KABUL ETMİŞ SAYILIRSINIZ.
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-3 text-end mt-3 mt-lg-0">
+                                            <button onclick="acceptCookies()" class="btn-cookie-accept">ANLADIM, KABUL ET</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        // Kullanıcı daha önce kabul etmiş mi kontrol et aga
+                                        if (!localStorage.getItem("cookiesAccepted")) {
+                                            document.getElementById("cookieBanner").style.display = "block";
+                                        }
+                                    });
+
+                                    function acceptCookies() {
+                                        // Tercihi kaydet ve banner'ı kapat
+                                        localStorage.setItem("cookiesAccepted", "true");
+                                        document.getElementById("cookieBanner").style.display = "none";
+                                    }
+                            </script>
                         </body>
 
                     </html>
