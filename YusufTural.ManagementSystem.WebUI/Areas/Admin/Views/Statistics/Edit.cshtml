@@ -1,0 +1,41 @@
+﻿@model Statistic
+@{
+    ViewData["Title"] = "İstatistikleri Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card shadow-sm">
+        <div class="card-body pt-3">
+            <h5 class="card-title">İstatistik Verilerini Düzenle</h5>
+            <form asp-action="Edit" method="post" class="row g-3">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Mutlu Müşteri Sayısı</label>
+                    <input type="number" asp-for="HappyCustomerCount" class="form-control" placeholder="Örn: 1500+">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Taşınan Su Miktarı</label>
+                        <input type="number" asp-for="TransportedWaterAmount" class="form-control" placeholder="Örn: 50.000 Ton">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Tamamlanan İş Sayısı</label>
+                            <input type="number" asp-for="CompletedJobCount" class="form-control" placeholder="Örn: 2400">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Yıllık Deneyim</label>
+                                <input type="number" asp-for="YearsOfExperience" class="form-control" placeholder="Örn: 15 Yıl">
+                                </div>
+
+                                <div class="col-12 mt-4 text-end border-top pt-3">
+                                    <a asp-action="Index" class="btn btn-secondary me-2">İptal</a>
+                                    <button type="submit" class="btn btn-warning text-white px-4">Değişiklikleri Kaydet</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
