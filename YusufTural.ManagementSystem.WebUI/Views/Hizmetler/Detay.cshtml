@@ -1,0 +1,76 @@
+﻿@model Service
+@{
+    Layout = "_Layout";
+    var allServices = ViewBag.AllServices as List<Service>;
+    var contact = ViewBag.Contact as Contact;
+}
+
+<div class="page-title dark-background" data-aos="fade" style="background-image: url(@ViewBag.PageTitleBg);">
+    <div class="container position-relative">
+        <h1>@Model.Title.ToUpper()</h1>
+        <p>ANKARA GENELİNDE PROFESYONEL VE GÜVENİLİR TANKER SU ÇÖZÜMLERİ.</p>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">ANA SAYFA</a></li>
+                <li class="current">HİZMETLER</li>
+                <li class="current">@Model.Title.ToUpper()</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<section id="service-details" class="service-details section">
+    <div class="container">
+        <div class="row gy-4">
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="services-list-modern">
+                    @foreach (var item in allServices ?? new List<Service>())
+                    {
+                        <a href="/hizmet/@item.Url" class="@(item.Url == Model.Url ? "active" : "")">
+                            @item.Title.ToUpper()
+                        </a>
+                    }
+                </div>
+
+                <div class="emergency-card mt-4">
+                    <div class="card-body p-4 text-center">
+                        <div class="icon-circle mb-3">
+                            <i class="bi bi-telephone-outbound"></i>
+                        </div>
+                        <h4>ACİL SU İHTİYACI MI VAR?</h4>
+                        <p>ANKARA'NIN HER YERİNE TESLİMAT SÖZÜ VERİYORUZ!</p>
+                        <a href="tel:@contact?.PhoneNumber?.Replace(" ", "")" class="modern-call-btn">HEMEN ARA</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-main-img mb-4">
+                    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid rounded-4 shadow-sm">
+                </div>
+
+                <h3>ANKARA GENELİ 7/24 KESİNTİSİZ @Model.Title.ToUpper() HİZMETİ</h3>
+                
+                <div class="content mt-4">
+                    @Html.Raw(Model.LongDescription)
+                </div>
+
+                <div class="modern-cta-box mt-5">
+                    <div class="cta-content d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div class="text">
+                            <h3>HEMEN TEKLİF ALIN</h3>
+                            <p>İHTİYACINIZI BİZE BELİRTİN, EN UYGUN FİYATI VERELİM.</p>
+                        </div>
+                        <div class="action">
+                            <a href="https://wa.me/9@(contact?.WhatsAppNumber?.Replace(" ", ""))" class="modern-wa-btn">
+                                <i class="bi bi-whatsapp"></i> WHATSAPP'TAN YAZ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

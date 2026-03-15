@@ -6,10 +6,14 @@ namespace YusufTural.ManagementSystem.WebUI.Controllers
     public class HizmetlerController : Controller
     {
         private readonly IServiceService _serviceService;
+        private readonly IContactService _contactService;
+        private readonly ISiteInformationService _siteInfoService;
 
-        public HizmetlerController(IServiceService serviceService)
+        public HizmetlerController(IServiceService serviceService, IContactService contactService, ISiteInformationService siteInfoService)
         {
             _serviceService = serviceService;
+            _contactService = contactService;
+            _siteInfoService = siteInfoService;
         }
 
         [HttpGet("hizmet/{url}")]
@@ -17,10 +21,21 @@ namespace YusufTural.ManagementSystem.WebUI.Controllers
         {
             if (string.IsNullOrEmpty(url)) return NotFound();
 
-            var services = await _serviceService.TGetListAsync();
-            var service = services.FirstOrDefault(x => x.Url == url);
+            var allServices = await _serviceService.TGetListAsync();
+            var service = allServices.FirstOrDefault(x => x.Url == url);
 
             if (service == null) return NotFound();
+
+            var siteInfo = (await _siteInfoService.TGetListAsync()).FirstOrDefault();
+            ViewBag.PageTitleBg = siteInfo?.BigImageUrl ?? "/site/assets/img/page-title-bg.webp";
+
+            ViewBag.AllServices = allServices;
+            ViewBag.Contact = (await _contactService.TGetListAsync()).FirstOrDefault();
+
+            ViewData["Title"] = service.SeoTitle;
+            ViewData["SeoDescription"] = service.SeoDescription;
+            ViewData["SeoKeyword"] = service.SeoKeywords;
+            ViewData["BodyClass"] = "service-details-page";
 
             return View(service);
         }

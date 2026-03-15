@@ -11,7 +11,7 @@
             {
                 <img src="@Model.Logo" alt="@Model.Name">
             }
-            <h1 class="sitename">@(Model?.Name ?? "YUSUF TURAL")</h1>
+            <h1 class="sitename d-none d-xl-block">@(Model?.Name ?? "YUSUF TURAL")</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">
@@ -23,7 +23,7 @@
                     <ul>
                         @foreach (var item in services ?? new List<Service>())
                         {
-                            <li><a asp-controller="Service" asp-action="Detail" asp-route-id="@item.Id">@item.Title.ToUpper()</a></li>
+                            <li><a href="/hizmet/@item.Url">@item.Title.ToUpper()</a></li>
                         }
                     </ul>
                 </li>
