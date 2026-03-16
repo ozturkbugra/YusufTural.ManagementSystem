@@ -1,0 +1,5 @@
+﻿@model List<SiteScript>
+@foreach (var item in Model)
+{
+    @Html.Raw(item.Content)
+}
