@@ -69,15 +69,15 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
             if (value == null) return NotFound();
             return View(value);
         }
-
         [HttpPost]
-        public async Task<IActionResult> Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile, IFormFile? bigImageFile)
+        public async Task<IActionResult> Edit(SiteInformation model, IFormFile? logoFile, IFormFile? faviconFile, IFormFile? bigFaviconFile, IFormFile? videoFile, IFormFile? bigImageFile, bool deleteLogo = false, bool deleteVideo = false)
         {
             try
             {
                 var existingData = await _siteInformationService.TGetByIdAsync(model.Id);
                 if (existingData == null) return NotFound();
 
+                // Metin alanlarını güncelliyoruz
                 existingData.Name = model.Name;
                 existingData.Slogan = model.Slogan;
                 existingData.SloganDescription = model.SloganDescription;
@@ -85,12 +85,31 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
                 existingData.SeoKeyword = model.SeoKeyword;
                 existingData.SeoDescription = model.SeoDescription;
 
-                // Dosya Güncellemeleri
+                // --- Logo Yönetimi ---
                 if (logoFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.Logo)) FileHelper.DeleteFile(existingData.Logo);
                     existingData.Logo = await FileHelper.UploadFile(logoFile, "images");
                 }
+                else if (deleteLogo)
+                {
+                    if (!string.IsNullOrEmpty(existingData.Logo)) FileHelper.DeleteFile(existingData.Logo);
+                    existingData.Logo = null;
+                }
+
+                // --- Video Yönetimi ---
+                if (videoFile != null)
+                {
+                    if (!string.IsNullOrEmpty(existingData.VideoUrl)) FileHelper.DeleteFile(existingData.VideoUrl);
+                    existingData.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
+                }
+                else if (deleteVideo)
+                {
+                    if (!string.IsNullOrEmpty(existingData.VideoUrl)) FileHelper.DeleteFile(existingData.VideoUrl);
+                    existingData.VideoUrl = null;
+                }
+
+                // --- Diğer Dosyalar (Favicon ve Arka Plan) ---
                 if (faviconFile != null)
                 {
                     if (!string.IsNullOrEmpty(existingData.Favicon)) FileHelper.DeleteFile(existingData.Favicon);
@@ -100,11 +119,6 @@ namespace YusufTural.ManagementSystem.WebUI.Areas.Admin.Controllers
                 {
                     if (!string.IsNullOrEmpty(existingData.BigFavicon)) FileHelper.DeleteFile(existingData.BigFavicon);
                     existingData.BigFavicon = await FileHelper.UploadFile(bigFaviconFile, "images");
-                }
-                if (videoFile != null)
-                {
-                    if (!string.IsNullOrEmpty(existingData.VideoUrl)) FileHelper.DeleteFile(existingData.VideoUrl);
-                    existingData.VideoUrl = await FileHelper.UploadFile(videoFile, "videos");
                 }
                 if (bigImageFile != null)
                 {

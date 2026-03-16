@@ -17,6 +17,8 @@
 <section class="section">
     <form asp-action="Edit" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
+        
+        @* Mevcut dosya yollarını hidden tutuyoruz ki değişmeyenler kaybolmasın *@
         <input type="hidden" asp-for="Logo" />
         <input type="hidden" asp-for="Favicon" />
         <input type="hidden" asp-for="BigFavicon" />
@@ -45,7 +47,7 @@
                                     </div>
                             
                                     <div class="col-12 mt-4">
-                                        <h6 class="text-primary fw-bold"><i class="bi bi-search me-1"></i> Arama Motoru Optimizasyonu (SEO)</h6>
+                                        <h6 class="text-primary fw-bold"><i class="bi bi-search me-1"></i> SEO Ayarları</h6>
                                         <hr class="mt-1">
                                     </div>
 
@@ -72,62 +74,73 @@
                                         <h5 class="card-title mb-0">Görsel Ayarları</h5>
                                     </div>
                                     <div class="card-body pt-3">
+                                        @* Logo Alanı *@
                                         <div class="mb-4">
                                             <label class="form-label fw-bold">Ana Logo</label>
-                                            <div class="mb-2">
-                                                <img id="logoPreview" src="@Model.Logo" alt="Mevcut Logo" class="img-thumbnail" style="max-height: 80px;">
-                                            </div>
+                                            @if (!string.IsNullOrEmpty(Model.Logo))
+                                            {
+                                                <div class="mb-2 d-flex align-items-center justify-content-between p-2 border rounded bg-light">
+                                                    <img id="logoPreview" src="@Model.Logo" alt="Mevcut Logo" style="max-height: 60px;">
+                                                    <div class="form-check form-switch mb-0">
+                                                        <input class="form-check-input" type="checkbox" name="deleteLogo" value="true" id="deleteLogo">
+                                                        <label class="form-check-label text-danger small" for="deleteLogo">Kaldır</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="mb-2"><img id="logoPreview" src="/site/assets/img/no-image.png" class="img-thumbnail" style="max-height: 60px;"></div>
+                                            }
                                             <input type="file" name="logoFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'logoPreview')">
                                         </div>
 
+                                        @* Arka Plan Alanı *@
                                         <div class="mb-4">
-                                            <label class="form-label fw-bold">Arka Plan Görseli</label>
+                                            <label class="form-label fw-bold">Arka Plan (Hero)</label>
                                             <div class="mb-2">
-                                                <img id="bigImagePreview" src="@Model.BigImageUrl" alt="Mevcut Hero" class="img-thumbnail" style="max-height: 120px;">
+                                                <img id="bigImagePreview" src="@Model.BigImageUrl" class="img-thumbnail" style="max-height: 100px; width: 100%; object-fit: cover;">
                                             </div>
                                             <input type="file" name="bigImageFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'bigImagePreview')">
-                                            <div class="form-text">(Giriş) bölümünün ana arka plan resmi.</div>
                                         </div>
 
-                                        <div class="mb-4">
-                                            <label class="form-label fw-bold">Favicon</label>
-                                            <div class="mb-2 text-center p-2 border rounded bg-light" style="width: fit-content;">
-                                                <img id="faviconPreview" src="@Model.Favicon" alt="Favicon" style="width: 16px; height: 16px;">
+                                        @* Faviconlar *@
+                                        <div class="row g-2 mb-4">
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Favicon (16x16)</label>
+                                                <div class="text-center p-2 border rounded mb-2"><img id="faviconPreview" src="@Model.Favicon" style="width: 16px; height: 16px;"></div>
+                                                <input type="file" name="faviconFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'faviconPreview')">
                                             </div>
-                                            <input type="file" name="faviconFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'faviconPreview')">
-                                        </div>
-
-                                        <div class="mb-0">
-                                            <label class="form-label fw-bold">Büyük Favicon</label>
-                                            <div class="mb-2 text-center p-2 border rounded bg-light" style="width: fit-content;">
-                                                <img id="bigFaviconPreview" src="@Model.BigFavicon" alt="Big Favicon" style="width: 32px; height: 32px;">
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Apple Icon (32x32)</label>
+                                                <div class="text-center p-2 border rounded mb-2"><img id="bigFaviconPreview" src="@Model.BigFavicon" style="width: 32px; height: 32px;"></div>
+                                                <input type="file" name="bigFaviconFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'bigFaviconPreview')">
                                             </div>
-                                            <input type="file" name="bigFaviconFile" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this, 'bigFaviconPreview')">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="card shadow-sm">
                                     <div class="card-header bg-transparent border-bottom">
-                                        <h5 class="card-title mb-0">Video Yapılandırması</h5>
+                                        <h5 class="card-title mb-0">Tanıtım Videosu</h5>
                                     </div>
                                     <div class="card-body pt-3">
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Tanıtım Videosu</label>
-                                            @if (!string.IsNullOrEmpty(Model.VideoUrl))
-                                            {
-                                                <div class="alert alert-success py-2 px-3 small mb-2 d-flex align-items-center">
-                                                    <i class="bi bi-play-circle me-2"></i> Mevcut Video Yüklü
+                                        @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                                        {
+                                            <div class="alert alert-info py-2 px-3 small mb-3 d-flex align-items-center justify-content-between">
+                                                <span><i class="bi bi-play-circle me-1"></i> Video Yüklü</span>
+                                                <div class="form-check form-switch mb-0">
+                                                    <input class="form-check-input" type="checkbox" name="deleteVideo" value="true" id="deleteVideo">
+                                                    <label class="form-check-label text-danger" for="deleteVideo">Sil</label>
                                                 </div>
-                                            }
-                                            <input type="file" name="videoFile" class="form-control form-control-sm" accept="video/mp4,video/*">
-                                        </div>
+                                            </div>
+                                        }
+                                        <input type="file" name="videoFile" class="form-control form-control-sm" accept="video/mp4,video/*">
                         
                                         <div class="d-grid gap-2 mt-4">
                                             <button type="submit" class="btn btn-warning text-white py-2 fw-bold">
-                                                <i class="bi bi-check-circle me-1"></i> Değişiklikleri Kaydet
+                                                <i class="bi bi-check-circle me-1"></i> Ayarları Güncelle
                                             </button>
-                                            <a asp-action="Index" class="btn btn-light py-2">Vazgeç</a>
+                                            <a asp-action="Index" class="btn btn-light py-2">İptal</a>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +151,6 @@
 
                 @section Scripts {
                     <script>
-                        // Anlık Resim Önizleme (Preview)
                         function previewImage(input, previewId) {
                             const preview = document.getElementById(previewId);
                             if (input.files && input.files[0]) {
@@ -151,4 +163,3 @@
                         }
                     </script>
                 }
-
