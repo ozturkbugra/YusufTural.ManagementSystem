@@ -61,6 +61,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error404");
+
 app.UseStaticFiles();
 
 app.UseMiddleware<VisitorTrackingMiddleware>();
@@ -74,6 +76,12 @@ app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
 );
+
+app.MapAreaControllerRoute(
+    name: "admin_area",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Index}/{action=Index}/{id?}");
+
 
 app.MapControllerRoute(
     name: "default",

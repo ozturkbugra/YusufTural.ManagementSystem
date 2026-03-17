@@ -2,6 +2,7 @@
 
 namespace YusufTural.ManagementSystem.WebUI.Areas.Admin
 {
+    [Area("Admin")]
     public class IndexController : Controller
     {
         public IActionResult Index()
