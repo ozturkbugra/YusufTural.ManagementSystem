@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using YusufTural.ManagementSystem.Business;
 using YusufTural.ManagementSystem.Business.Abstract;
@@ -35,6 +36,11 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
 });
 
 builder.Services.AddScoped<IVisitorService, VisitorManager>();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "keys")))
+    .SetApplicationName("YusufTuralManagementSystem");
+
 
 builder.Services.AddControllersWithViews();
 
